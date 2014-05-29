@@ -6,4 +6,3 @@ def load_pars(fname):
         pars = json.load(fp)
 
     return pars
-
