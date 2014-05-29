@@ -1,0 +1,15 @@
+{
+    "numtrials": 50000,
+    "max_rt": 1.5,
+    "frac_nogo": 0.4,
+    "max_onset": 4.0,
+    "min_onset": 1.5,
+    "pts_per_correct": 50.0,
+    "pts_decay": 0.5,
+    "pts_offset": 0.350,
+    "grid": [3, 3],
+    "iti": 1.0,
+    "iti_jitter": 0.25,
+    "disp_resp": 0.75,
+    "disp_resp_jitter": 0.25
+}
