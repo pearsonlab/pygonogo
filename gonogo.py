@@ -9,5 +9,5 @@ if __name__ == '__main__':
     subject = 'test'
     mytask = task.Task(taskname, subject)
 
-    mytask.stims['noimg'].draw()
+    mytask.stims['notargs'][0].draw()
     mytask.win.flip()

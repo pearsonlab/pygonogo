@@ -35,11 +35,11 @@ def setup_geometry(win, pars):
     usable_size = [1.0, 1.0]
     reduced_bounds = usable_size - 2 * border
     grid = pars['grid']
-    numtargs = np.prod(grid)
+    geom['numtargs'] = np.prod(grid)
     target_max_size = reduced_bounds / grid 
     target_scale = 0.5
     target_size = target_scale * np.max(target_max_size) * np.ones(2)
-    geom['target_sizes'] = np.tile(target_size, (numtargs, 1))
+    geom['target_size'] = target_size 
 
     # calculate centers of targets (assuming coords range from 0 to 1)
     xcenters = border[0] + (np.arange(grid[0]) + 0.5) * target_max_size[0] 
@@ -54,18 +54,26 @@ def setup_geometry(win, pars):
 
     return geom
 
-def setup_stims(win):
+def setup_stims(win, geom):
     # get relevant audio and visual resources loaded
     stims = {}
     stims['cashsnd'] = Sound('cash.wav')
     stims['firesnd'] = Sound('bbhit.wav')
     stims['buzzsnd'] = Sound('buzz.wav')
 
-    stims['noimg'] = ImageStim(win, image='rfrog2.jpg')
-    stims['goimg'] = ImageStim(win, image='gfrog2.jpg')
-    stims['defimg'] = ImageStim(win, image='lilypad.jpg')
+    stims['notargs'] = []
+    stims['gotargs'] = []
+    stims['deftargs'] = []
     stims['bkimg'] = ImageStim(win, image='pond.jpg')
 
+    for targ in range(geom['numtargs']):
+        stims['notargs'].append(ImageStim(win, image='rfrog2.jpg', 
+            size=geom['target_size'], pos=geom['target_centers'][targ]))
+        stims['gotargs'].append(ImageStim(win, image='gfrog2.jpg', 
+            size=geom['target_size'], pos=geom['target_centers'][targ]))
+        stims['deftargs'].append(ImageStim(win, image='lilypad.jpg', 
+            size=geom['target_size'], pos=geom['target_centers'][targ]))
+    print stims
     return stims
 
 def setup_data_file(taskname, subjectname):
