@@ -8,13 +8,14 @@ TO DO:
 
 import initializers
 import controller, display
-from psychopy.core import monotonicClock
+from psychopy.core import monotonicClock, Clock
+import psychopy.event as event
 
 class Task:
     def __init__(self, taskname, subject):
         self.taskname = taskname
         self.subject = subject
-        self.start_time = monotonicClock.getTime()
+        self.keep_running = True
         self.setup()
 
     def setup(self):
@@ -32,5 +33,17 @@ class Task:
         self.win.close()
 
     def run(self):
-        # start task's monotonic clock, etc. ...
-        pass
+        self.start_time = monotonicClock.getTime()
+
+        self.display.draw()
+        event.waitKeys()
+        self.display.onset(3, 'go')
+        clk = Clock()
+        while clk.getTime() < 2:
+            self.display.draw()
+        self.display.offset(3)
+        clk.reset() 
+        while clk.getTime() < 2:
+            self.display.draw()
+
+        event.waitKeys()

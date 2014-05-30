@@ -9,7 +9,7 @@ class Display:
         self.win = win
         self.pars = pars
         self.geom = initializers.setup_geometry(self.win, self.pars)
-        self.clocks = [None] * self.geom['numtargs']
+        self.rotation_clocks = [None] * self.geom['numtargs']
         self.type = ['default'] * self.geom['numtargs']
 
         self.setup_sounds()
@@ -40,7 +40,9 @@ class Display:
                 pos=self.geom['target_centers'][targ]))
 
         # set initial target stims to be the defaults
-        self.targets = self.deftargs
+        self.targets = []
+        for targ in self.deftargs:
+            self.targets.append(targ)
 
     def setup_text(self):
         self.scoretxt = TextStim(self.win, text="Total Points:", 
@@ -58,8 +60,8 @@ class Display:
             self.targets[index] = self.gotargs[index]
         elif value == 'no':
             self.targets[index] = self.notargs[index] 
-        else:
-            self.targets[index] = self.deftargs
+        elif value == 'default':
+            self.targets[index] = self.deftargs[index]
 
     def set_target_text(self, index, value):
         self.targets[index].setText(value)
@@ -68,23 +70,23 @@ class Display:
         self.scoretxt.setText('Total Points: ' + str(pts))
 
     def onset(self, index, value):
-        self.clocks[index] = Clock()
+        self.rotation_clocks[index] = Clock()
         self.type[index] = value
 
     def offset(self, index):
-        self.clocks[index] = Clock()
+        self.rotation_clocks[index] = Clock()
         self.type[index] = 'default'
 
     def update(self):
         # for each target with clock running (i.e., rotating) ...
-        for idx, clk in enumerate(self.clocks):
+        for idx, clk in enumerate(self.rotation_clocks):
             if clk:
                 rot_time = clk.getTime()
                 rot_dur = self.pars['rot_dur']
 
                 if rot_time > rot_dur:
                     rotfrac = -1  # fully revealed
-                    self.clocks[idx] = None  # get rid of clock
+                    self.rotation_clocks[idx] = None  # get rid of clock
                 else:
                     rotfrac = cos(pi * rot_time / self.pars['rot_dur'])
 
