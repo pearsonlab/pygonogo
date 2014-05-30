@@ -1,6 +1,7 @@
 from __future__ import division
 import json
-from psychopy.visual import Window
+from psychopy.visual import Window, ImageStim
+from psychopy.sound import Sound
 import numpy as np
 import os
 
@@ -12,7 +13,7 @@ def setup_pars(fname):
     return pars
 
 def setup_window():
-    win = Window(fullscr=True, allowGUI=False, screen=0, units='height', 
+    win = Window(fullscr=True, allowGUI=True, screen=0, units='height', 
         monitor='testMonitor', colorSpace='rgb255')
     return win
 
@@ -52,6 +53,20 @@ def setup_geometry(win, pars):
     geom['target_centers'] = target_centers
 
     return geom
+
+def setup_stims(win):
+    # get relevant audio and visual resources loaded
+    stims = {}
+    stims['cashsnd'] = Sound('cash.wav')
+    stims['firesnd'] = Sound('bbhit.wav')
+    stims['buzzsnd'] = Sound('buzz.wav')
+
+    stims['noimg'] = ImageStim(win, image='rfrog2.jpg')
+    stims['goimg'] = ImageStim(win, image='gfrog2.jpg')
+    stims['defimg'] = ImageStim(win, image='lilypad.jpg')
+    stims['bkimg'] = ImageStim(win, image='pond.jpg')
+
+    return stims
 
 def setup_data_file(taskname, subjectname):
     # set up directory structure, if necessary

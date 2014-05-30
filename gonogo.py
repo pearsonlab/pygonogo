@@ -8,4 +8,6 @@ if __name__ == '__main__':
     taskname = 'gonogo'
     subject = 'test'
     mytask = task.Task(taskname, subject)
-    print mytask.outfile 
+
+    mytask.stims['noimg'].draw()
+    mytask.win.flip()
