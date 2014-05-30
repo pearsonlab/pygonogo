@@ -1,6 +1,6 @@
 from __future__ import division
 import json
-from psychopy.visual import Window, ImageStim
+from psychopy.visual import Window, ImageStim, TextStim
 from psychopy.sound import Sound
 import numpy as np
 import os
@@ -57,14 +57,18 @@ def setup_geometry(win, pars):
 def setup_stims(win, geom):
     # get relevant audio and visual resources loaded
     stims = {}
+
+    ####### sounds ###########
     stims['cashsnd'] = Sound('cash.wav')
     stims['firesnd'] = Sound('bbhit.wav')
     stims['buzzsnd'] = Sound('buzz.wav')
 
+    ####### images ###########
     stims['notargs'] = []
     stims['gotargs'] = []
     stims['deftargs'] = []
-    stims['bkimg'] = ImageStim(win, image='pond.jpg')
+    stims['bkimg'] = ImageStim(win, image='pond.jpg', units='norm', 
+        size=(2.0, 2.0))
 
     for targ in range(geom['numtargs']):
         stims['notargs'].append(ImageStim(win, image='rfrog2.jpg', 
@@ -73,7 +77,15 @@ def setup_stims(win, geom):
             size=geom['target_size'], pos=geom['target_centers'][targ]))
         stims['deftargs'].append(ImageStim(win, image='lilypad.jpg', 
             size=geom['target_size'], pos=geom['target_centers'][targ]))
-    print stims
+
+    # set initial target stims to be the defaults
+    stims['targets'] = stims['deftargs']
+
+    ####### text ############ 
+    stims['scoretxt'] = TextStim(win, text="Total Points:", 
+        font='Helvetica', alignHoriz='left', alignVert='top', units='norm', 
+        pos=(-1, 1), height=0.2, color=[178, 34, 34], colorSpace='rgb255')
+
     return stims
 
 def setup_data_file(taskname, subjectname):
