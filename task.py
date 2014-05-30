@@ -7,13 +7,14 @@ TO DO:
 """
 
 import initializers
-import state, display
-from psychopy.core import MonotonicClock
+import controller, display
+from psychopy.core import monotonicClock
 
 class Task:
     def __init__(self, taskname, subject):
         self.taskname = taskname
         self.subject = subject
+        self.start_time = monotonicClock.getTime()
         self.setup()
 
     def setup(self):
@@ -23,7 +24,7 @@ class Task:
         # plexon init here ...
         self.outfile = initializers.setup_data_file(self.taskname, 
             self.subject)
-        self.state = state.State()
+        self.controller = controller.Controller()
         self.data = []
 
     def teardown(self):
