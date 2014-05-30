@@ -10,9 +10,5 @@ if __name__ == '__main__':
     subject = 'test'
     mytask = task.Task(taskname, subject)
 
-    mytask.stims['bkimg'].draw()
-    for stim in mytask.stims['targets']:
-        stim.draw()
-    mytask.stims['scoretxt'].draw()
-    mytask.win.flip()
+    mytask.display.draw()
     event.waitKeys()
