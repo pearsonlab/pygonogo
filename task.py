@@ -11,6 +11,7 @@ import initializers
 class Task:
     def __init__(self):
         self.pars = initializers.load_pars("parameters.json")
+        self.win = initializers.setup_window()
 
 
 
