@@ -12,5 +12,5 @@
     "iti_jitter": 0.25,
     "disp_resp": 0.75,
     "disp_resp_jitter": 0.25,
-    "rot_dur": 0.75
+    "rot_dur": 0.05
 }
