@@ -9,3 +9,4 @@ if __name__ == '__main__':
     subject = 'test'
     mytask = task.Task(taskname, subject)
     mytask.run()
+    mytask.teardown()

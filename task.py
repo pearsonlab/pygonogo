@@ -24,7 +24,7 @@ class Task:
         # plexon init here ...
         self.outfile = initializers.setup_data_file(self.taskname, 
             self.subject)
-        self.controller = controller.Controller()
+        self.controller = controller.Controller(self.pars, self.display)
         self.data = []
 
     def teardown(self):
@@ -34,15 +34,24 @@ class Task:
     def run(self):
         self.start_time = monotonicClock.getTime()
 
-        self.display.draw()
-        event.waitKeys()
-        self.display.onset(3, 'go')
-        clk = Clock()
-        while clk.getTime() < 2:
-            self.display.draw()
-        self.display.offset(3)
-        clk.reset() 
-        while clk.getTime() < 2:
-            self.display.draw()
+        self.killtimer = Clock()
 
-        event.waitKeys()
+        while not self.controller.end_task and self.killtimer.getTime() < 10:
+            self.controller.run_trial()
+
+            # save data
+
+            # esc check
+
+        # self.display.draw()
+        # event.waitKeys()
+        # self.display.onset(3, 'go')
+        # clk = Clock()
+        # while clk.getTime() < 2:
+        #     self.display.draw()
+        # self.display.offset(3)
+        # clk.reset() 
+        # while clk.getTime() < 2:
+        #     self.display.draw()
+
+        # event.waitKeys()

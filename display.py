@@ -5,7 +5,7 @@ import initializers
 from math import cos, pi
 
 class Display:
-    def __init__(self, win, pars):
+    def __init__(self, pars):
         self.win = initializers.setup_window()
         self.pars = pars
         self.geom = initializers.setup_geometry(self.win, self.pars)
