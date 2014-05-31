@@ -6,7 +6,7 @@ from math import cos, pi
 
 class Display:
     def __init__(self, win, pars):
-        self.win = win
+        self.win = initializers.setup_window()
         self.pars = pars
         self.geom = initializers.setup_geometry(self.win, self.pars)
         self.rotation_clocks = [None] * self.geom['numtargs']
@@ -108,4 +108,7 @@ class Display:
         for stim in self.targtxt:
             stim.draw()
         self.win.flip()
+
+    def close(self):
+        self.win.close()
 

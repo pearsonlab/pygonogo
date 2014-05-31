@@ -20,8 +20,7 @@ class Task:
 
     def setup(self):
         self.pars = initializers.setup_pars("parameters.json")
-        self.win = initializers.setup_window()
-        self.display = display.Display(self.win, self.pars)
+        self.display = display.Display(self.pars)
         # plexon init here ...
         self.outfile = initializers.setup_data_file(self.taskname, 
             self.subject)
@@ -30,7 +29,7 @@ class Task:
 
     def teardown(self):
         # plexon close here...
-        self.win.close()
+        self.display.close()
 
     def run(self):
         self.start_time = monotonicClock.getTime()
