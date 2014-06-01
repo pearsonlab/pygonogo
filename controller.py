@@ -46,7 +46,7 @@ class Controller:
             else:
                 self.handle_no_input()
 
-            self.clean_up()
+            self.refresh()
 
         self.close_trial()
 
@@ -126,7 +126,7 @@ class Controller:
         # remove text overlay on target 
         self.display.set_target_text(self.which_target, '')
 
-    def clean_up(self):
+    def refresh(self):
         if self.target_is_on:
             self.display.offset(self.which_target)
             self.display.draw()
