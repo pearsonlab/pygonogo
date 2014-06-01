@@ -17,25 +17,28 @@ class Display:
         self.setup_text()
 
     def setup_sounds(self):
-        self.cashsnd = Sound('cash.wav')
-        self.firesnd = Sound('bbhit.wav')
-        self.buzzsnd = Sound('buzz.wav')
+        self.cashsnd = Sound('resources/cash.wav')
+        self.firesnd = Sound('resources/bbhit.wav')
+        self.buzzsnd = Sound('resources/buzz.wav')
 
     def setup_images(self):
         self.notargs = []
         self.gotargs = []
         self.deftargs = []
-        self.bkimg = ImageStim(self.win, image='pond.jpg', units='norm', 
-            size=(2.0, 2.0))
+        self.bkimg = ImageStim(self.win, image='resources/pond.jpg', 
+            units='norm', size=(2.0, 2.0))
 
         for targ in range(self.geom['numtargs']):
-            self.notargs.append(ImageStim(self.win, image='rfrog2.jpg', 
-                size=self.geom['target_size'], 
+            self.notargs.append(ImageStim(self.win, 
+                image='resources/rfrog2.jpg', 
+                size=self.geom['target_size'],
                 pos=self.geom['target_centers'][targ]))
-            self.gotargs.append(ImageStim(self.win, image='gfrog2.jpg', 
-                size=self.geom['target_size'], 
+            self.gotargs.append(ImageStim(self.win, 
+                image='resources/gfrog2.jpg', 
+                size=self.geom['target_size'],
                 pos=self.geom['target_centers'][targ]))
-            self.deftargs.append(ImageStim(self.win, image='lilypad.jpg', 
+            self.deftargs.append(ImageStim(self.win, 
+                image='resources/lilypad.jpg', 
                 size=self.geom['target_size'], 
                 pos=self.geom['target_centers'][targ]))
 
