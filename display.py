@@ -64,7 +64,7 @@ class Display:
             self.targets[index] = self.deftargs[index]
 
     def set_target_text(self, index, value):
-        self.targets[index].setText(value)
+        self.targtxt[index].setText(value)
 
     def set_score(self, pts):
         self.scoretxt.setText('Total Points: ' + str(pts))

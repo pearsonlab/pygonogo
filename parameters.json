@@ -4,7 +4,7 @@
     "frac_nogo": 0.4,
     "max_onset": 4.0,
     "min_onset": 1.5,
-    "pts_per_correct": 50.0,
+    "pts_per_correct": 50,
     "pts_decay": 0.5,
     "pts_offset": 0.350,
     "grid": [3, 3],

@@ -15,7 +15,6 @@ class Task:
     def __init__(self, taskname, subject):
         self.taskname = taskname
         self.subject = subject
-        self.keep_running = True
         self.setup()
 
     def setup(self):
@@ -36,22 +35,10 @@ class Task:
 
         self.killtimer = Clock()
 
-        while not self.controller.end_task and self.killtimer.getTime() < 10:
-            self.controller.run_trial()
+        while not self.controller.end_task and self.killtimer.getTime() < 50:
+            data = self.controller.run_trial()
 
             # save data
 
-            # esc check
-
-        # self.display.draw()
-        # event.waitKeys()
-        # self.display.onset(3, 'go')
-        # clk = Clock()
-        # while clk.getTime() < 2:
-        #     self.display.draw()
-        # self.display.offset(3)
-        # clk.reset() 
-        # while clk.getTime() < 2:
-        #     self.display.draw()
-
-        # event.waitKeys()
+            if event.getKeys(keyList=['escape']):
+                break
