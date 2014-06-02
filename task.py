@@ -30,7 +30,6 @@ class Task:
     def teardown(self):
         # plexon close here...
         self.display.close()
-        print self.data
 
     def save(self):
         with open(self.outfile, 'w+') as fp:
