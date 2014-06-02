@@ -76,7 +76,7 @@ def setup_data_file(taskname, subjectname):
         root = '/'
     datadir = os.path.join(root, 'data', taskname, subjectname)
     if not os.path.exists(datadir):
-        os.mkdir(datadir)
+        os.makedirs(datadir)
 
     # check previous data files to get next name in sequence for this run
     prev_files = os.listdir(datadir)
