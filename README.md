@@ -13,8 +13,8 @@ Code is organized in a really basic Controller-View setup, since Python and Psyc
 2. The Task class performs a lot of setup using functions from `initializers.py`, including loading parameters (from `parameters.json`), calculating screen geometry, setting up the Plexon or NI-DAQ, and figuring out where to save the data file and what to call it. 
     * The task parameters are used to instantiate a `Display` (`display.py`), which handles all drawing onscreen and exposes a high-level API.
     * `setup_plexon` returns a function that encapsulates all the details of signaling events via TTL pulse or Plexon event buffer and saving events to the task's data structure. It can then simply be called as a black box by the Controller, supplying an event name and channel.
-    * The task also instantiates a `Controller` (`controller.py`), which is passed references to the Display, the logger, and the task parameters. The Controller handles all task logic and calls the logging function to mark task events.
-3. `gonogo.py` calls the Task's `run` method, which calls the Controller's `run_trial` method in a loop, saving the data repeatedly.
+    * The task also instantiates a `Controller` (`controller.py`), which is passed references to the Display (View), the logger, and the task parameters. The Controller handles all task logic and calls the logging function to mark task events.
+3. `gonogo.py` calls the Task's `run` method, which calls the Controller's `run_trial` method and its own `save` method in a loop until the user terminates execution by hitting `ESC`.
 
 # To-Do:
 * Save task parameters for each run.
