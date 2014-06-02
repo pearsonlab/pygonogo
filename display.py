@@ -88,7 +88,7 @@ class Display:
                 rot_dur = self.pars['rot_dur']
 
                 if rot_time > rot_dur:
-                    rotfrac = -1  # fully revealed
+                    rotfrac = -1  # rotation completed 
                     self.rotation_clocks[idx] = None  # get rid of clock
                 else:
                     rotfrac = cos(pi * rot_time / self.pars['rot_dur'])

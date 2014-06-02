@@ -31,7 +31,7 @@ def setup_plexon(data):
         elif nidaq:
             pass  # send user events for channel 1
 
-        event = {"name": event_name, "time": monotonicClock.getTime()}
+        event = {"event": event_name, "time": monotonicClock.getTime()}
 
         data.append(event)
         return event
