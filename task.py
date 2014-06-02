@@ -10,7 +10,7 @@ import psychopy.event as event
 import json
 
 class Task:
-    def __init__(self, taskname, subject):
+    def __init__(self):
         task_info = self.get_subject()
         self.taskname = task_info['Task Name'] 
         self.subject = task_info['Subject'] 
