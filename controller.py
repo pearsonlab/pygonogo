@@ -12,6 +12,7 @@ class Controller:
         self.mark_event = logger
 
     def open_trial(self):
+        self.trialnum += 1
         self.result = ''
         self.pts_this_trial = 0
         self.trial_over = False
@@ -19,7 +20,7 @@ class Controller:
         self.input_received = False
         self.no_response = False
         self.response_timer = None
-        self.rt = None
+        self.rt = float('NaN') 
         self.data = [] 
 
         numtargs = np.prod(self.pars['grid'])
@@ -104,6 +105,9 @@ class Controller:
             self.outcome_sound = self.display.firesnd
             self.outcome_delay = 0.3
 
+        # remember to reset input
+        self.input_received = False
+
     def handle_no_input(self):
         self.result = 'no response'
         self.correct = self.is_nogo
@@ -137,6 +141,7 @@ class Controller:
     def close_trial(self):
         # print to screen
         self.mark_event('trial_over', channel=8)
+        print 'Trial {0:d}: Type {1}  Result: {2}  RT: {3:0.3g}  Correct: {4:d}  Points: {5:d}'.format(self.trialnum, self.trial_type, self.result, self.rt, self.correct, self.pts_this_trial)
 
     def calculate_points(self, pars, rt):
         return int(np.floor(pars['pts_per_correct'] * np.exp(
