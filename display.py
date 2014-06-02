@@ -48,9 +48,10 @@ class Display:
             self.targets.append(targ)
 
     def setup_text(self):
-        self.scoretxt = TextStim(self.win, text="Total Points:", 
+        self.scoretxt = TextStim(self.win, text="Total Points: ", 
         font='Helvetica', alignHoriz='left', alignVert='top', units='norm', 
-        pos=(-1, 1), height=0.2, color=[178, 34, 34], colorSpace='rgb255')
+        pos=(-1, 1), height=0.2, color=[178, 34, 34], colorSpace='rgb255', 
+        wrapWidth=2)
 
         self.targtxt = []
         for targ in range(self.geom['numtargs']):
@@ -87,7 +88,7 @@ class Display:
                 rot_time = clk.getTime()
                 rot_dur = self.pars['rot_dur']
 
-                if rot_time > rot_dur:
+                if rot_time >= rot_dur:
                     rotfrac = -1  # rotation completed 
                     self.rotation_clocks[idx] = None  # get rid of clock
                 else:
