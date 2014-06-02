@@ -13,7 +13,7 @@ def setup_pars(fname):
     return pars
 
 def setup_window():
-    win = Window(fullscr=True, allowGUI=True, screen=0, units='height', 
+    win = Window(fullscr=True, allowGUI=False, screen=0, units='height', 
         monitor='testMonitor', colorSpace='rgb255')
     return win
 
