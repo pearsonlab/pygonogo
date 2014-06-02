@@ -89,7 +89,8 @@ def setup_data_file(taskname, subjectname):
 
     # build file name
     fname = '.'.join([subjectname, str(this_version), taskname, 'json'])
+    parsname = '.'.join([subjectname, str(this_version), 'pars', 'json'])
 
     # return absolute path
-    return os.path.join(datadir, fname)
+    return (os.path.join(datadir, fname), os.path.join(datadir, parsname))
 

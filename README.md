@@ -19,6 +19,5 @@ Code is organized in a really basic Controller-View setup, since Python and Psyc
 The folder `resources` contains sound and image binaries used by the task.
 
 # To-Do:
-* Save task parameters for each run.
 * Incorporate joystick support.
 * Incorporate support for Plexon using the wrapper in [RealTimeElectrophy](https://github.com/chrox/RealTimeElectrophy)

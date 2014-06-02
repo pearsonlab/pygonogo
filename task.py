@@ -22,10 +22,14 @@ class Task:
         self.display = display.Display(self.pars)
         self.data = []
         self.logger = initializers.setup_plexon(self.data)
-        self.outfile = initializers.setup_data_file(self.taskname,
-            self.subject)
+        self.outfile, self.parsfile = initializers.setup_data_file(
+            self.taskname, self.subject)
         self.controller = controller.Controller(self.pars, self.display, 
             self.logger)
+
+        # save task parameters
+        with open(self.parsfile, 'w+') as fp:
+            json.dump(self.pars, fp)
 
     def teardown(self):
         # plexon close here...
