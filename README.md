@@ -16,6 +16,8 @@ Code is organized in a really basic Controller-View setup, since Python and Psyc
     * The task also instantiates a `Controller` (`controller.py`), which is passed references to the Display (View), the logger, and the task parameters. The Controller handles all task logic and calls the logging function to mark task events.
 3. `gonogo.py` calls the Task's `run` method, which calls the Controller's `run_trial` method and its own `save` method in a loop until the user terminates execution by hitting `ESC`.
 
+The folder `resources` contains sound and image binaries used by the task.
+
 # To-Do:
 * Save task parameters for each run.
 * Incorporate joystick support.
