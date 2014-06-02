@@ -3,12 +3,13 @@ from psychopy.core import CountdownTimer, Clock, StaticPeriod
 import psychopy.event as event
 
 class Controller:
-    def __init__(self, pars, display):
+    def __init__(self, pars, display, logger):
         self.pars = pars
         self.display = display
         self.trialnum = 0
         self.score = 0
         self.end_task = False
+        self.mark_event = logger
 
     def open_trial(self):
         self.result = ''
@@ -19,7 +20,7 @@ class Controller:
         self.no_response = False
         self.response_timer = None
         self.rt = None
-        self.data = {} 
+        self.data = [] 
 
         numtargs = np.prod(self.pars['grid'])
         self.which_target = np.random.randint(0, numtargs) 
@@ -32,7 +33,7 @@ class Controller:
             self.trial_type = 'go'
 
         self.onset_countdown = CountdownTimer(self.onset_interval) 
-        # mark event: trial onset
+        self.mark_event('trial_start', channel=1)
 
     def run_trial(self):
         self.open_trial()
@@ -62,10 +63,12 @@ class Controller:
                 break
             elif pressed:
                 self.input_received = True
+                self.mark_event('responded', channel=3)
                 break
             elif self.target_is_on and (self.response_timer.getTime() > 
                 self.pars['max_rt']):
                 self.no_response = True
+                self.mark_event('no_response', channel=4)
                 break
 
     def present_target(self):
@@ -74,7 +77,7 @@ class Controller:
             self.display.onset(self.which_target, self.trial_type)
             self.target_is_on = True
             self.response_timer = Clock()
-            # mark event: target onset
+            self.mark_event('target on', channel=2)
 
         self.display.draw()
 
@@ -115,7 +118,7 @@ class Controller:
 
         # refresh screen
         self.outcome_sound.play()
-        # mark event: outcome
+        self.mark_event('outcome', channel=5)
 
         # during static period, code between start and complete will run
         iti = StaticPeriod()
@@ -133,8 +136,7 @@ class Controller:
 
     def close_trial(self):
         # print to screen
-        # save data to file
-        pass
+        self.mark_event('trial_over', channel=8)
 
     def calculate_points(self, pars, rt):
         return int(np.floor(pars['pts_per_correct'] * np.exp(

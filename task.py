@@ -8,8 +8,8 @@ TO DO:
 
 import initializers
 import controller, display
-from psychopy.core import monotonicClock, Clock
 import psychopy.event as event
+import json
 
 class Task:
     def __init__(self, taskname, subject):
@@ -20,25 +20,29 @@ class Task:
     def setup(self):
         self.pars = initializers.setup_pars("parameters.json")
         self.display = display.Display(self.pars)
-        # plexon init here ...
-        self.outfile = initializers.setup_data_file(self.taskname, 
-            self.subject)
-        self.controller = controller.Controller(self.pars, self.display)
         self.data = []
+        self.logger = initializers.setup_plexon(self.data)
+        self.outfile = initializers.setup_data_file(self.taskname,
+            self.subject)
+        self.controller = controller.Controller(self.pars, self.display, 
+            self.logger)
 
     def teardown(self):
         # plexon close here...
         self.display.close()
+        print self.data
+
+    def save(self):
+        with open(self.outfile, 'w+') as fp:
+            json.dump(self.data, fp)
 
     def run(self):
-        self.start_time = monotonicClock.getTime()
+        while not self.controller.end_task:
+            self.controller.run_trial()
 
-        self.killtimer = Clock()
-
-        while not self.controller.end_task and self.killtimer.getTime() < 50:
-            data = self.controller.run_trial()
-
-            # save data
+            # save data after each trial
+            self.save()
 
             if event.getKeys(keyList=['escape']):
                 break
+

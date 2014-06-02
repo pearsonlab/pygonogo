@@ -1,6 +1,7 @@
 from __future__ import division
 import json
 from psychopy.visual import Window
+from psychopy.core import monotonicClock
 import numpy as np
 import os
 
@@ -19,8 +20,23 @@ def setup_window():
 def setup_joystick():
     pass
 
-def setup_plexon():
-    pass
+def setup_plexon(data):
+    # do plexon setup stuff here
+    plexon = None
+    nidaq = None
+
+    def logger(event_name, channel=1):
+        if plexon:
+            pass  # send user event
+        elif nidaq:
+            pass  # send user events for channel 1
+
+        event = {"name": event_name, "time": monotonicClock.getTime()}
+
+        data.append(event)
+        return event
+
+    return logger
 
 def setup_geometry(win, pars):
     # define some colors in a dictionary
@@ -65,11 +81,15 @@ def setup_data_file(taskname, subjectname):
     # check previous data files to get next name in sequence for this run
     prev_files = os.listdir(datadir)
     file_pieces = [pf.split('.') for pf in prev_files]
-    file_versions = [int(pc[1]) for pc in file_pieces if pc[-1] == 'mat']
-    this_version = max(file_versions) + 1
+    file_versions = [int(pc[1]) for pc in file_pieces if pc[-1] == 'json']
+    if file_versions:
+        this_version = max(file_versions) + 1
+    else:
+        this_version = 1
 
     # build file name
-    fname = '.'.join([subjectname, str(this_version), taskname, 'mat'])
+    fname = '.'.join([subjectname, str(this_version), taskname, 'json'])
 
     # return absolute path
     return os.path.join(datadir, fname)
+
