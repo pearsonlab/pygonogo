@@ -2,8 +2,11 @@ from __future__ import division
 import json
 from psychopy.visual import Window
 from psychopy.core import monotonicClock
+from psychopy.hardware import joystick
 import numpy as np
 import os
+
+wintype = 'pyglet'
 
 def setup_pars(fname):
     # load parameters from a json file
@@ -13,12 +16,20 @@ def setup_pars(fname):
     return pars
 
 def setup_window():
-    win = Window(fullscr=True, allowGUI=False, screen=0, units='height', 
-        monitor='testMonitor', colorSpace='rgb255')
+    win = Window(fullscr=True, allowGUI=False, screen=1, units='height', 
+        monitor='testMonitor', colorSpace='rgb255', 
+        winType=wintype)
     return win
 
 def setup_joystick():
-    pass
+    joystick.backend = wintype 
+    njoys = joystick.getNumJoysticks()
+    if njoys > 0:
+        joy = joystick.Joystick(0)  # get first one
+    else:
+        joy = None
+
+    return joy
 
 def setup_plexon(data):
     # do plexon setup stuff here

@@ -3,13 +3,14 @@ from psychopy.core import CountdownTimer, Clock, StaticPeriod
 import psychopy.event as event
 
 class Controller:
-    def __init__(self, pars, display, logger):
+    def __init__(self, pars, display, logger, joystick):
         self.pars = pars
         self.display = display
         self.trialnum = 0
         self.score = 0
         self.end_task = False
         self.mark_event = logger
+        self.joy = joystick
 
     def open_trial(self):
         self.trialnum += 1
@@ -59,10 +60,11 @@ class Controller:
         while True:
             self.present_target()
             pressed = event.getKeys(keyList=['left', 'right', 'escape'])
+            joypull = joy.getButton(0) 
             if 'escape' in pressed:
                 self.end_task = True
                 break
-            elif pressed:
+            elif pressed or joypull:
                 self.input_received = True
                 self.mark_event('responded', channel=3)
                 break
