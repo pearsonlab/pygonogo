@@ -13,7 +13,7 @@ def setup_pars(fname):
     return pars
 
 def setup_window():
-    win = Window(fullscr=True, allowGUI=True, screen=0, units='height', 
+    win = Window(fullscr=True, allowGUI=False, screen=0, units='height', 
         monitor='testMonitor', colorSpace='rgb255')
     return win
 
@@ -76,7 +76,7 @@ def setup_data_file(taskname, subjectname):
         root = '/'
     datadir = os.path.join(root, 'data', taskname, subjectname)
     if not os.path.exists(datadir):
-        os.mkdir(datadir)
+        os.makedirs(datadir)
 
     # check previous data files to get next name in sequence for this run
     prev_files = os.listdir(datadir)

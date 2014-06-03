@@ -1,21 +1,32 @@
 """
 Class definition for task object.
-
-TO DO:
-* make task metaclass?
-* task handles event loop, with list of functions to call each iteration?
 """
 
+import sys
+from psychopy.gui import DlgFromDict
 import initializers
 import controller, display
 import psychopy.event as event
 import json
 
 class Task:
-    def __init__(self, taskname, subject):
-        self.taskname = taskname
-        self.subject = subject
+    def __init__(self):
+        task_info = self.get_subject()
+        self.taskname = task_info['Task Name'] 
+        self.subject = task_info['Subject'] 
         self.setup()
+
+    def get_subject(self):
+        info = {"Task Name": 'gonogo', "Subject": 'test'}
+        infoDlg = DlgFromDict(dictionary=info, 
+            title='Enter a subject number or name')
+        if infoDlg.OK:
+            print info
+        else:
+            sys.exit()
+
+        return info
+
 
     def setup(self):
         self.pars = initializers.setup_pars("parameters.json")
