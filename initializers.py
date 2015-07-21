@@ -2,6 +2,7 @@ from __future__ import division
 import json
 from psychopy.visual import Window
 from psychopy.core import monotonicClock
+from psychopy.hardware import joystick
 import numpy as np
 import os
 from sys import platform
@@ -16,13 +17,13 @@ def setup_pars(fname):
 
 
 def setup_window():
-    win = Window(fullscr=True, allowGUI=False, screen=0, units='height',
-                 monitor='testMonitor', colorSpace='rgb255')
+    win = Window(fullscr=True, allowGUI=False, screen=1, units='height',
+                 monitor='testMonitor', colorSpace='rgb255', winType='pyglet')
     return win
 
 
 def setup_joystick():
-    pass
+    return joystick.Joystick(0)
 
 
 def setup_plexon(data, plexon):

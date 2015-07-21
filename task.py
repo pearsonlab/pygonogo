@@ -39,8 +39,9 @@ class Task:
         self.logger = initializers.setup_plexon(self.data, self.plexon)
         self.outfile, self.parsfile = initializers.setup_data_file(
             self.taskname, self.subject)
+        self.joystick = initializers.setup_joystick()
         self.controller = controller.Controller(self.pars, self.display,
-                                                self.logger)
+                                                self.logger, self.joystick)
 
         # save task parameters
         with open(self.parsfile, 'w+') as fp:
