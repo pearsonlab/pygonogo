@@ -2,14 +2,17 @@ import numpy as np
 from psychopy.core import CountdownTimer, Clock, StaticPeriod
 import psychopy.event as event
 
+
 class Controller:
-    def __init__(self, pars, display, logger):
+
+    def __init__(self, pars, display, logger, joystick):
         self.pars = pars
         self.display = display
         self.trialnum = 0
         self.score = 0
         self.end_task = False
         self.mark_event = logger
+        self. joystick = joystick
 
     def open_trial(self):
         self.trialnum += 1
@@ -20,20 +23,20 @@ class Controller:
         self.input_received = False
         self.no_response = False
         self.response_timer = None
-        self.rt = float('NaN') 
-        self.data = [] 
+        self.rt = float('NaN')
+        self.data = []
 
         numtargs = np.prod(self.pars['grid'])
-        self.which_target = np.random.randint(0, numtargs) 
-        self.onset_interval = np.random.uniform(self.pars['min_onset'], 
-            self.pars['max_onset'])
+        self.which_target = np.random.randint(0, numtargs)
+        self.onset_interval = np.random.uniform(self.pars['min_onset'],
+                                                self.pars['max_onset'])
         self.is_nogo = np.random.rand() < self.pars['frac_nogo']
         if self.is_nogo:
             self.trial_type = 'no'
         else:
             self.trial_type = 'go'
 
-        self.onset_countdown = CountdownTimer(self.onset_interval) 
+        self.onset_countdown = CountdownTimer(self.onset_interval)
         self.mark_event('trial_start', channel=1)
 
     def run_trial(self):
@@ -62,18 +65,17 @@ class Controller:
             if 'escape' in pressed:
                 self.end_task = True
                 break
-            elif pressed:
+            elif pressed or True in self.joystick.getAllButtons():
                 self.input_received = True
                 self.mark_event('responded', channel=3)
                 break
-            elif self.target_is_on and (self.response_timer.getTime() > 
-                self.pars['max_rt']):
+            elif self.target_is_on and (self.response_timer.getTime() > self.pars['max_rt']):
                 self.no_response = True
                 self.mark_event('no_response', channel=4)
                 break
 
     def present_target(self):
-        if not self.target_is_on and self.onset_countdown.getTime() < 0:    
+        if not self.target_is_on and self.onset_countdown.getTime() < 0:
             # rotate target into view
             self.display.onset(self.which_target, self.trial_type)
             self.target_is_on = True
@@ -90,10 +92,10 @@ class Controller:
 
             self.correct = not self.is_nogo
             if self.correct:
-                self.pts_this_trial = self.calculate_points(self.pars, 
-                    self.rt) 
+                self.pts_this_trial = self.calculate_points(self.pars,
+                                                            self.rt)
                 self.outcome_sound = self.display.cashsnd
-            else: 
+            else:
                 self.pts_this_trial = -self.pars['pts_per_correct']
                 self.outcome_sound = self.display.buzzsnd
 
@@ -115,8 +117,8 @@ class Controller:
 
     def display_outcome(self):
         # update text onscreen
-        self.display.set_target_text(self.which_target, 
-            str(self.pts_this_trial))
+        self.display.set_target_text(self.which_target,
+                                     str(self.pts_this_trial))
         self.score += self.pts_this_trial
         self.display.set_score(self.score)
 
@@ -130,7 +132,7 @@ class Controller:
         self.display.draw()
         iti.complete()
 
-        # remove text overlay on target 
+        # remove text overlay on target
         self.display.set_target_text(self.which_target, '')
 
     def refresh(self):

@@ -1,10 +1,14 @@
+from psychopy import prefs
+prefs.general['audioLib'] = ['pyo']
 from psychopy.sound import Sound
 from psychopy.visual import ImageStim, TextStim
 from psychopy.core import Clock
 import initializers
 from math import cos, pi
 
+
 class Display:
+
     def __init__(self, pars):
         self.win = initializers.setup_window()
         self.pars = pars
@@ -25,22 +29,22 @@ class Display:
         self.notargs = []
         self.gotargs = []
         self.deftargs = []
-        self.bkimg = ImageStim(self.win, image='resources/pond.jpg', 
-            units='norm', size=(2.0, 2.0))
+        self.bkimg = ImageStim(self.win, image='resources/pond.jpg',
+                               units='norm', size=(2.0, 2.0))
 
         for targ in range(self.geom['numtargs']):
-            self.notargs.append(ImageStim(self.win, 
-                image='resources/rfrog2.jpg', 
-                size=self.geom['target_size'],
-                pos=self.geom['target_centers'][targ]))
-            self.gotargs.append(ImageStim(self.win, 
-                image='resources/gfrog2.jpg', 
-                size=self.geom['target_size'],
-                pos=self.geom['target_centers'][targ]))
-            self.deftargs.append(ImageStim(self.win, 
-                image='resources/lilypad.jpg', 
-                size=self.geom['target_size'], 
-                pos=self.geom['target_centers'][targ]))
+            self.notargs.append(ImageStim(self.win,
+                                          image='resources/rfrog2.jpg',
+                                          size=self.geom['target_size'],
+                                          pos=self.geom['target_centers'][targ]))
+            self.gotargs.append(ImageStim(self.win,
+                                          image='resources/gfrog2.jpg',
+                                          size=self.geom['target_size'],
+                                          pos=self.geom['target_centers'][targ]))
+            self.deftargs.append(ImageStim(self.win,
+                                           image='resources/lilypad.jpg',
+                                           size=self.geom['target_size'],
+                                           pos=self.geom['target_centers'][targ]))
 
         # set initial target stims to be the defaults
         self.targets = []
@@ -48,22 +52,22 @@ class Display:
             self.targets.append(targ)
 
     def setup_text(self):
-        self.scoretxt = TextStim(self.win, text="Total Points: ", 
-        font='Helvetica', alignHoriz='left', alignVert='top', units='norm', 
-        pos=(-1, 1), height=0.2, color=[178, 34, 34], colorSpace='rgb255', 
-        wrapWidth=2)
+        self.scoretxt = TextStim(self.win, text="Total Points: ",
+                                 font='Helvetica', alignHoriz='left', alignVert='top', units='norm',
+                                 pos=(-1, 1), height=0.2, color=[178, 34, 34], colorSpace='rgb255',
+                                 wrapWidth=2)
 
         self.targtxt = []
         for targ in range(self.geom['numtargs']):
-            self.targtxt.append(TextStim(self.win, 
-                pos=self.geom['target_centers'][targ], 
-                color='White', units='height', height=0.05, text=''))
- 
+            self.targtxt.append(TextStim(self.win,
+                                         pos=self.geom['target_centers'][targ],
+                                         color='White', units='height', height=0.05, text=''))
+
     def set_target_image(self, index, value='default'):
         if value == 'go':
             self.targets[index] = self.gotargs[index]
         elif value == 'no':
-            self.targets[index] = self.notargs[index] 
+            self.targets[index] = self.notargs[index]
         elif value == 'default':
             self.targets[index] = self.deftargs[index]
 
@@ -89,14 +93,14 @@ class Display:
                 rot_dur = self.pars['rot_dur']
 
                 if rot_time > rot_dur:
-                    rotfrac = -1  # rotation completed 
+                    rotfrac = -1  # rotation completed
                 else:
                     rotfrac = cos(pi * rot_time / self.pars['rot_dur'])
 
-                # adjust target size to give illusion of rotation    
+                # adjust target size to give illusion of rotation
                 base_size = self.geom['target_size']
-                self.targets[idx].size = (abs(rotfrac) * base_size[0], 
-                    base_size[1])
+                self.targets[idx].size = (abs(rotfrac) * base_size[0],
+                                          base_size[1])
 
                 # set correct image on target based on rotation angle
                 if rotfrac < 0:
@@ -114,4 +118,3 @@ class Display:
 
     def close(self):
         self.win.close()
-
