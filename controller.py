@@ -12,7 +12,7 @@ class Controller:
         self.score = 0
         self.end_task = False
         self.mark_event = logger
-        self. joystick = joystick
+        self.joystick = joystick
 
     def open_trial(self):
         self.trialnum += 1
@@ -65,10 +65,15 @@ class Controller:
             if 'escape' in pressed:
                 self.end_task = True
                 break
-            elif pressed or True in self.joystick.getAllButtons():
+            elif pressed:
                 self.input_received = True
                 self.mark_event('responded', channel=3)
                 break
+            elif self.joystick is not None:
+                if True in self.joystick.getAllButtons():
+                    self.input_received = True
+                    self.mark_event('responded', channel=3)
+                    break
             elif self.target_is_on and (self.response_timer.getTime() > self.pars['max_rt']):
                 self.no_response = True
                 self.mark_event('no_response', channel=4)

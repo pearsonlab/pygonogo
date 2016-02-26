@@ -23,7 +23,11 @@ def setup_window():
 
 
 def setup_joystick():
-    return joystick.Joystick(0)
+    try:
+        return joystick.Joystick(0)
+    except AttributeError:
+        print 'No joystick plugged in.'
+        return None
 
 
 def setup_plexon(data, plexon):
