@@ -18,10 +18,11 @@ class Task:
         task_info = self.get_subject()
         self.taskname = task_info['Task Name']
         self.subject = task_info['Subject']
+        self.mode = task_info['Mode']
         self.setup()
 
     def get_subject(self):
-        info = {"Task Name": 'gonogo', "Subject": 'test'}
+        info = {"Task Name": 'gonogo', "Subject": 'test', 'Mode': ('Photodiode', 'Plexon')}
         infoDlg = DlgFromDict(dictionary=info,
                               title='Enter a subject number or name')
         if infoDlg.OK:
@@ -35,8 +36,11 @@ class Task:
         self.pars = initializers.setup_pars("parameters.json")
         self.display = display.Display(self.pars)
         self.data = []
-        self.plexon = PlexClient.PlexClient()
-        self.logger = initializers.setup_plexon(self.data, self.plexon)
+        if self.mode == 'Plexon':
+            self.plexon = PlexClient.PlexClient()
+        else:
+            self.plexon = None
+        self.logger = initializers.setup_acquisition(self.data, self.plexon)
         self.outfile, self.parsfile = initializers.setup_data_file(
             self.taskname, self.subject)
         self.joystick = initializers.setup_joystick()
@@ -48,7 +52,8 @@ class Task:
             json.dump(self.pars, fp)
 
     def teardown(self):
-        self.plexon.CloseClient()
+        if self.plexon is not None:
+            self.plexon.CloseClient()
         self.display.close()
 
     def save(self):

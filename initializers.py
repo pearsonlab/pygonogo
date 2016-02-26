@@ -30,16 +30,15 @@ def setup_joystick():
         return None
 
 
-def setup_plexon(data, plexon):
-    plexon.InitClient()
-
-    nidaq = None
+def setup_acquisition(data, plexon):
+    if plexon:
+        plexon.InitClient()
 
     def logger(event_name, channel=1):
-        if plexon:
+        if plexon is not None:
             plexon.MarkEvent(channel)
-        elif nidaq:
-            pass  # send user events for channel 1
+        else:  # photodiode mode
+            pass  # flicker goes here
 
         event = {"event": event_name, "time": monotonicClock.getTime()}
 
