@@ -1,5 +1,5 @@
 import numpy as np
-from psychopy.core import CountdownTimer, Clock, StaticPeriod
+from psychopy.core import CountdownTimer, Clock, getTime, wait
 import psychopy.event as event
 
 
@@ -132,10 +132,11 @@ class Controller:
         self.mark_event('outcome', channel=5)
 
         # during static period, code between start and complete will run
-        iti = StaticPeriod()
-        iti.start(self.outcome_delay)
-        self.display.draw()
-        iti.complete()
+        start = getTime()
+        self.display.draw(empty_queue=True)
+        end = getTime()
+        flicker_time = end-start
+        wait(self.outcome_delay - flicker_time)
 
         # remove text overlay on target
         self.display.set_target_text(self.which_target, '')

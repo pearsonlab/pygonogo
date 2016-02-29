@@ -30,7 +30,7 @@ def setup_joystick():
         return None
 
 
-def setup_acquisition(data, plexon):
+def setup_acquisition(data, plexon, queue):
     if plexon:
         plexon.InitClient()
 
@@ -38,7 +38,16 @@ def setup_acquisition(data, plexon):
         if plexon is not None:
             plexon.MarkEvent(channel)
         else:  # photodiode mode
-            pass  # flicker goes here
+            value = np.binary_repr(channel)
+            # zero pad to 8 bits and add stop and start bits
+            value = '1' + (8 - len(value)) * '0' + value + '1'
+            # add bits to draw queue
+            if len(queue) == 0:  # only add to queue if it's empty
+                for bit in reversed(value):  # add to queue in reverse since we'll pop it
+                    if bit == '1':
+                        queue.append(True)
+                    if bit == '0':
+                        queue.append(False)
 
         event = {"event": event_name, "time": monotonicClock.getTime()}
 

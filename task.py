@@ -8,6 +8,7 @@ import initializers
 import controller
 import display
 import psychopy.event as event
+from psychopy import visual
 import json
 from Plexon import PlexClient
 
@@ -34,13 +35,14 @@ class Task:
 
     def setup(self):
         self.pars = initializers.setup_pars("parameters.json")
-        self.display = display.Display(self.pars)
         self.data = []
         if self.mode == 'Plexon':
             self.plexon = PlexClient.PlexClient()
         else:
             self.plexon = None
-        self.logger = initializers.setup_acquisition(self.data, self.plexon)
+        self.flicker_queue = []
+        self.logger = initializers.setup_acquisition(self.data, self.plexon, self.flicker_queue)
+        self.display = display.Display(self.pars, self.flicker_queue)
         self.outfile, self.parsfile = initializers.setup_data_file(
             self.taskname, self.subject)
         self.joystick = initializers.setup_joystick()
