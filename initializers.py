@@ -23,11 +23,15 @@ def setup_window():
 
 
 def setup_joystick():
-    return joystick.Joystick(0)
+    if joystick.getNumJoysticks() > 0:
+        return joystick.Joystick(0)
+    else:
+        return None
 
 
-def setup_plexon(data, plexon):
-    plexon.InitClient()
+def setup_logging(data, plexon):
+    if plexon:
+        plexon.InitClient()
 
     nidaq = None
 
@@ -36,6 +40,8 @@ def setup_plexon(data, plexon):
             plexon.MarkEvent(channel)
         elif nidaq:
             pass  # send user events for channel 1
+        else:
+            pass
 
         event = {"event": event_name, "time": monotonicClock.getTime()}
 
