@@ -2,7 +2,7 @@
 #coding:utf-8
 
 ###########################################################
-### A Python wrapper of Plexon.h  
+### A Python wrapper of Plexon.h
 ### Written by Huangxin
 ###########################################################
 
@@ -25,7 +25,8 @@ try:
     from ctypes.wintypes import HWND
 except ImportError or ValueError:
     logger.warning('Cannot import Plexon dynamic library in your system.')
-    
+    raise
+
 
 
 ###############################################################################
@@ -52,12 +53,12 @@ MAX_WF_LENGTH_LONG = 120
 
 
 ##
-## PL_Event is used in PL_GetTimestampStructures(...) 
+## PL_Event is used in PL_GetTimestampStructures(...)
 ## 16 bytes
 class PL_Event(Structure):
     _fields_ = [('Type', ctypes.c_byte),                      ## PL_SingleWFType, PL_ExtEventType or PL_ADDataType
-                ('NumberOfBlocksInRecord', ctypes.c_byte),    ## reserved 
-                ('BlockNumberInRecord', ctypes.c_byte),       ## reserved 
+                ('NumberOfBlocksInRecord', ctypes.c_byte),    ## reserved
+                ('BlockNumberInRecord', ctypes.c_byte),       ## reserved
                 ('UpperTS', ctypes.c_ubyte),                  ## Upper 8 bits of the 40-bit timestamp
                 ('TimeStamp', ctypes.c_ulong),                ## Lower 32 bits of the 40-bit timestamp
                 ('Channel', ctypes.c_short),                  ## Channel that this came from, or Event number
@@ -65,39 +66,39 @@ class PL_Event(Structure):
                 ('DataType', ctypes.c_byte),                  ## reserved
                 ('NumberOfBlocksPerWaveform', ctypes.c_byte), ## reserved
                 ('BlockNumberForWaveform', ctypes.c_byte),    ## reserved
-                ('NumberOfDataWords', ctypes.c_byte)]         ## number of shorts (2-byte integers) that follow this header 
-    
+                ('NumberOfDataWords', ctypes.c_byte)]         ## number of shorts (2-byte integers) that follow this header
+
 ##
 ## The same as PL_Event above, but with Waveform added
 ## 128 bytes
 class PL_Wave(Structure):
-    _fields_ = [('Type', ctypes.c_byte),                      ## PL_SingleWFType, PL_ExtEventType or PL_ADDataType         
-                ('NumberOfBlocksInRecord', ctypes.c_byte),    ## reserved                                                  
-                ('BlockNumberInRecord', ctypes.c_byte),       ## reserved                                                  
-                ('UpperTS', ctypes.c_ubyte),                  ## Upper 8 bits of the 40-bit timestamp                      
-                ('TimeStamp', ctypes.c_ulong),                ## Lower 32 bits of the 40-bit timestamp                     
-                ('Channel', ctypes.c_short),                  ## Channel that this came from, or Event number              
-                ('Unit', ctypes.c_short),                     ## Unit classification, or Event strobe value                
-                ('DataType', ctypes.c_byte),                  ## reserved                                                  
-                ('NumberOfBlocksPerWaveform', ctypes.c_byte), ## reserved                                                  
-                ('BlockNumberForWaveform', ctypes.c_byte),    ## reserved                                                  
+    _fields_ = [('Type', ctypes.c_byte),                      ## PL_SingleWFType, PL_ExtEventType or PL_ADDataType
+                ('NumberOfBlocksInRecord', ctypes.c_byte),    ## reserved
+                ('BlockNumberInRecord', ctypes.c_byte),       ## reserved
+                ('UpperTS', ctypes.c_ubyte),                  ## Upper 8 bits of the 40-bit timestamp
+                ('TimeStamp', ctypes.c_ulong),                ## Lower 32 bits of the 40-bit timestamp
+                ('Channel', ctypes.c_short),                  ## Channel that this came from, or Event number
+                ('Unit', ctypes.c_short),                     ## Unit classification, or Event strobe value
+                ('DataType', ctypes.c_byte),                  ## reserved
+                ('NumberOfBlocksPerWaveform', ctypes.c_byte), ## reserved
+                ('BlockNumberForWaveform', ctypes.c_byte),    ## reserved
                 ('NumberOfDataWords', ctypes.c_byte),         ## number of shorts (2-byte integers) that follow this header
-                ('WaveForm', ctypes.c_short * MAX_WF_LENGTH)] ## The actual waveform data                                  
+                ('WaveForm', ctypes.c_short * MAX_WF_LENGTH)] ## The actual waveform data
 
 ##
 ## An extended version of PL_Wave for longer waveforms
 ## 256 bytes
 class PL_WaveLong(Structure):
-    _fields_ = [('Type', ctypes.c_byte),                     ## PL_SingleWFType, PL_ExtEventType or PL_ADDataType         
-                ('NumberOfBlocksInRecord', ctypes.c_byte),   ## reserved                                                  
-                ('BlockNumberInRecord', ctypes.c_byte),      ## reserved                                                  
-                ('UpperTS', ctypes.c_ubyte),                 ## Upper 8 bits of the 40-bit timestamp                      
-                ('TimeStamp', ctypes.c_ulong),               ## Lower 32 bits of the 40-bit timestamp                     
-                ('Channel', ctypes.c_short),                 ## Channel that this came from, or Event number              
-                ('Unit', ctypes.c_short),                    ## Unit classification, or Event strobe value                
-                ('DataType', ctypes.c_byte),                 ## reserved                                                  
-                ('NumberOfBlocksPerWaveform', ctypes.c_byte),## reserved                                                  
-                ('BlockNumberForWaveform', ctypes.c_byte),   ## reserved                                                  
+    _fields_ = [('Type', ctypes.c_byte),                     ## PL_SingleWFType, PL_ExtEventType or PL_ADDataType
+                ('NumberOfBlocksInRecord', ctypes.c_byte),   ## reserved
+                ('BlockNumberInRecord', ctypes.c_byte),      ## reserved
+                ('UpperTS', ctypes.c_ubyte),                 ## Upper 8 bits of the 40-bit timestamp
+                ('TimeStamp', ctypes.c_ulong),               ## Lower 32 bits of the 40-bit timestamp
+                ('Channel', ctypes.c_short),                 ## Channel that this came from, or Event number
+                ('Unit', ctypes.c_short),                    ## Unit classification, or Event strobe value
+                ('DataType', ctypes.c_byte),                 ## reserved
+                ('NumberOfBlocksPerWaveform', ctypes.c_byte),## reserved
+                ('BlockNumberForWaveform', ctypes.c_byte),   ## reserved
                 ('NumberOfDataWords', ctypes.c_byte),        ## number of shorts (2-byte integers) that follow this header
                 ('WaveForm', ctypes.c_short * MAX_WF_LENGTH_LONG)]  ## The actual long waveform data
 

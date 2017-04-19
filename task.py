@@ -10,11 +10,10 @@ import display
 import psychopy.event as event
 import json
 
-import os
-if os.name == 'nt':
+try:
     from Plexon import PlexClient
-else:
-    Plexon = None
+except:
+    PlexClient = None
 
 
 class Task:
@@ -41,7 +40,7 @@ class Task:
         self.display = display.Display(self.pars)
         self.data = []
 
-        if Plexon:
+        if PlexClient:
             self.plexon = PlexClient.PlexClient()
         else:
             self.plexon = None
